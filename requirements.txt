@@ -6,3 +6,5 @@ pyjwt
 streamlit
 requests
 python-multipart
+watchdog
+passlib

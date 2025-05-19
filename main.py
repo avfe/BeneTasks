@@ -3,9 +3,10 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Text, desc, asc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
+from sqlalchemy import event
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 from typing import List, Optional
 import jwt
 import time
@@ -34,7 +35,7 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(Text)
-    status = Column(String, index=True)  # Например, "в ожидании", "в работе", "завершено"
+    status = Column(String, index=True, default="в ожидании")
     created_at = Column(DateTime, default=datetime.utcnow)
     priority = Column(Integer, default=0)
     owner_id = Column(Integer, ForeignKey("users.id"))
@@ -46,7 +47,7 @@ class Task(Base):
 class TaskCreate(BaseModel):
     title: str
     description: str
-    status: str
+    status: str = "в ожидании"
     priority: Optional[int] = 0
 
 class TaskUpdate(BaseModel):
@@ -67,8 +68,8 @@ class TaskOut(BaseModel):
         orm_mode = True
 
 class UserCreate(BaseModel):
-    username: str
-    password: str
+    username: constr(min_length=3, max_length=50)
+    password: constr(min_length=6)
 
 class Token(BaseModel):
     access_token: str
@@ -165,6 +166,11 @@ def startup():
     finally:
         db.close()
 
+@event.listens_for(Task, "init", propagate=True)
+def _task_init(target, args, kwargs):
+    if "priority" not in kwargs:
+        target.priority = 0
+
 # -----------------------------
 # Эндпоинты аутентификации
 # -----------------------------
@@ -181,7 +187,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     access_token = create_access_token(data={"sub": new_user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "username": new_user.username}
 
 @app.post("/token", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
