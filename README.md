@@ -1,3 +1,18 @@
+# UPD 20.05.2025: Добавлены тесты
+Coverage 91%, основные сценарии протестированы, html приложен в ./htmlcov директории
+
+Запускаются обычные тесты с помощью:
+```bash
+pytest
+```
+А нагрузочные, после запуска back-end-а, с помощью:
+```bash
+locust -f tests/performance/locustfile.py --host=http://127.0.0.1:8000
+```
+
+Реализованы functional, unit и performance тесты.
+
+
 # BeneTasks
 
 **BeneTasks** — это простое веб-приложение для управления задачами. Состоит из backend-а на **FastAPI** и frontend-а на **Streamlit**. Пользователи могут регистрироваться, входить в систему и управлять своими задачами: создавать, просматривать, редактировать и удалять.
@@ -118,10 +133,16 @@ streamlit run streamlit_app.py
 ## Структура проекта
 
 ```
+
 ├── main.py             # Backend FastAPI
 ├── streamlit_app.py    # Frontend Streamlit
 ├── requirements.txt    # Зависимости
 └── README.md           # Документация
+├── tests
+├── ├── functional
+├── ├── unit
+├── ├── performance
+├── htmlcov
 ```
 
 ---
