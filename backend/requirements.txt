@@ -9,4 +9,4 @@ python-multipart
 watchdog
 passlib
 python-dotenv
-psycopg2
+asyncpg
