@@ -1,4 +1,4 @@
-from main import Task
+from backend.main import Task
 
 def test_priority_default_init():
     task = Task(title="x", description="y")

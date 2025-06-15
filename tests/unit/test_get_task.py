@@ -1,6 +1,5 @@
 import pytest
 from httpx import AsyncClient
-import main
 
 
 async def _auth_headers(client: AsyncClient, username="getter", password="pass123"):

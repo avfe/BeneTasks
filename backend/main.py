@@ -14,7 +14,18 @@ import time
 # -----------------------------
 # Настройки приложения и БД
 # -----------------------------
-DATABASE_URL = "sqlite:///./tasks.db"
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Загружаем переменные из .env файла
+
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = os.getenv("POSTGRES_PORT")
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASS = os.getenv("POSTGRES_PASSWORD")
+
+DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

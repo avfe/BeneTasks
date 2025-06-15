@@ -3,7 +3,7 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from main import app, Base, get_db, SessionLocal
+from backend.main import app, Base, get_db
 
 # Настройка тестовой БД (отдельный файл)
 TEST_DATABASE_URL = "sqlite:///./test.db"

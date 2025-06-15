@@ -1,8 +1,8 @@
 import jwt
-import pytest
 from datetime import timedelta, datetime
 
-import main
+from backend import main
+
 
 def test_create_access_token_custom_expiry():
     delta = timedelta(seconds=60)

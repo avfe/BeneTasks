@@ -1,6 +1,7 @@
 import pytest
 from httpx import AsyncClient
-import main
+from backend import main
+
 
 async def _auth_headers(client: AsyncClient, username="babbibo", password="babbibo"):
     # Регистрация

@@ -1,4 +1,5 @@
-import main
+from backend import main
+
 
 def test_clear_cache_manual():
     # вручную кладём что-то в кэш и очищаем

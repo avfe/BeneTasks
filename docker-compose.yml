@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:13-alpine
+    container_name: postgres_db
+    volumes:
+      # Том для сохранения данных PostgreSQL между перезапусками
+      - db_data:/var/lib/postgresql/data/
+    env_file:
+      # Загружаем переменные (пароли, имена) из .env файла
+      - ./.env
+    ports:
+      # Пробрасываем порт на хост-машину для удобства отладки
+      - "5432:5432"
+    restart: always
+    networks:
+      - app-network
+
+  # Сервис Backend (FastAPI)
+  backend:
+    build:
+      context: ./backend # Указываем путь к папке с Dockerfile
+    container_name: fastapi_backend
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+     - db
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: streamlit_frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

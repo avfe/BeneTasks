@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from main import Task, User  # type: ignore
+from backend.main import Task, User  # type: ignore
 
 
 def test_task_defaults():

@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://127.0.0.1:8000"  # URL вашего FastAPI-приложения
+API_URL = "backend:8000"  # URL вашего FastAPI-приложения
 
 # Инициализация session_state для хранения токена, имени пользователя и текущей «страницы»
 if "token" not in st.session_state:

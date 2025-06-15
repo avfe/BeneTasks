@@ -2,7 +2,7 @@ import time
 from httpx import AsyncClient
 import pytest
 
-import main
+from backend import main
 
 
 @pytest.mark.asyncio

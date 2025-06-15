@@ -1,4 +1,5 @@
-import main
+from backend import main
+
 
 def test_startup_creates_admin(monkeypatch):
     """
