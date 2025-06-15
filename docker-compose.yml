@@ -56,7 +56,7 @@ services:
 
 networks:
   app-network:
-    driver: overlay
+    driver: bridge
 
 volumes:
   db_data:
